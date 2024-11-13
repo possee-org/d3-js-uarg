@@ -1,0 +1,8 @@
+*/__pycache__/*
+build/*
+site/_build/*
+site/notebooks/*
+data/*
+site/content/*/_generated/*
+survey_analysis/*
+*.egg-info/*

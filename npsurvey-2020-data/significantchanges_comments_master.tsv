@@ -1,0 +1,111 @@
+COMMENTS
+Automatic differentiation
+Vizualization of NumPy documentation by using "tree" of modules and functions. Also it would be usefull if new branches of the "tree" I didn't see yet, would be marked with some color
+Maybe some graphics in the website to clarify multidimensional operations
+Nothing: NumPy is excellent!
+I like this idea of a mentorship program to contribute :)
+Computation speed
+Performance tests related to the different ways of programming with Numpy. (Original in Spanish: Pruebas de rendimiento relacionadas con las distintas formas de programar con Numpy.)
+Cleaner documentation with more cross linking
+Native numexpr-ike functionality
+Direct GPU support, without using other packages like nuba
+more transparent numba (or numba like) integration
+More speed ;)
+It occasionally breaks or installs incorrectly on windows and with VSCode. Numpy experts might do more to smooth over this issue
+Document the errors
+outer products for vectors are still quite confusing
+make loadtxt and savetxt more symmetrical and flexible
+Support for cuda or OpenCL technologies should be more transparent. (Original in Spanish: El soporte para tecnologías tipo cuda u OpencL debería ser más transparente.)
+Portability and independent
+More understanding of low level functions
+Support for Mypy
+Better IDE Autocomplete
+Guided examples
+more integration with pandas, although this one is the superior one.
+Restructure and simplify the documentation
+Improved documentation on concepts and theory behind NumPy
+Tutorials to improve performance without being an expert C or Fortran user. (Original in Spanish: Tutoriales para mejorar rendimiento sin ser usuario experto de C o Fortran.)
+I do not understand why np.random.rand(10,10) is okay, but np.ones/zeros(10,10) is not.
+GPU support
+Non pickle serialization
+view ndarray as matrix like in matlab or R
+Capacity improvements and interpolation. (Original in Spanish: Mejoras en la capacidad e interpolación.)
+Combine methods/algorithms under single module to reduce imports (and googling).
+Type annotations, they help a lot to streamline development in supporting IDEs
+Ability to run in low computing resource environments. (Original in Spanish: Capacidad de correr en entornos de bajos recursos computacionales.)
+Arbitrary precision and the addition of physical constants (although that's just for convenience).
+Documentation in Spanish
+Better integration with charts and big data. (Original in Spanish: Mejor integración con gráficos y grandes volúmenes de datos.)
+Just support for type annotations
+*beginner-friendly numpy is too comp.
+Just better documentation
+MICROPYTHON
+Better type system similar to that of Julia
+np.nan for int arrays
+More widespread adoption in universities.
+clear up the confusing situation with matrices and arrays or at least explain it more thoroughly
+More cohesion? - "one right way to do things" (scalars), actually removing np.matrix, better support for @, etc.
+adaptability
+Something like Google's JAX, with differential functionality and better speed.
+GPU support would speed up some computations on large arrays.
+Although this is probably not too feasible, some limited ability to write "non-vectorised" multi-line maths/logic in simple loop-like structures (e.g. where perhaps tools like Numba might be overkill) and have it optimise the loop overhead (e.g. like some sort of local static typing) would be quite nice to see.
+GPU support
+Cleaner C++ interface
+I know you'll never do it, but the matmul operator is nearly useless. I have no control as to whether the user passes in a matrix or scalar, and in many instances both are entire correctly. So my code is still only using dot. I've read the arguments of 'only one way' and it's bogus. We don't have different operators to add int int vs float float, nor should we. So I have dot(F, P).dot(Q) everywhere instead of F@P@Q. It is so hard to read, and prone to error (F.dot(P) can fail if F is not a matrix). I initially went through a bunch of code replacing dot with @ but had to get rid of them all because I was getting endless exceptions. This is sw to do math - please let us express it in a reasonable manner! And make these comment boxes bigger! A one line box to enter a 'significant' change?
+Julia broadcasting syntax would be AWESOME! No ideas how to make happen.
+nothing, you all are doing great with this project, thanks for your awesome work
+kill pandas
+Make the mean and standard deviation functions account for nan values like the nanmean functions.
+more elaborate examples
+I love numpy, thanks for all your hard work!
+GPU support. Other languages support (Rust, PHP, Javascript)
+From my point of view, numpy is most important as the base on which other scientific packages are built. The ones I use most are scipy.stats, astropy, and pandas. In that respect, I don’t see a need for significant changes in numoy
+What's the deal with numpy.matrix?
+Automatic differentiation
+More functions designed for sparse arrays
+Reduction on the size, splitting parts of niche modules into stand alone projects
+Better documentation
+GPU adaption, optimisation tools
+GPU computing
+built in parallelization over machines
+Memory mapped numpy array and support B for custom hardware
+Interfaces a otros lenguajes
+Expanding the number of interpolation methods. (Расширение количества методов интерполяции
+distributed computing
+Hpy api for integration with pypy
+High-level APIs
+Differential equations
+and parallel and distributed capabilities, not sure if they already available.
+Faster imports, less reliance on conda-forge
+Tighter integration / support for numpy extensions like numba and cupy
+Soliciting materials for tutorials from well versed users
+Real compatibility with PyPy
+Adding autodiff, enabling named tensor axes (even if not "labelled", at least "named", to keep tensor dimensions' semantic meaning straight)
+Custom FFT kernels
+Better coordination of array-like types throughout the scientific ecosystem
+Cython interaction is sometimes awkward (should I use Cython memoryviews or an ndarray?)
+sincos implementation, exp(1j * x) implementation, vectorized transcendentals (e.g., using Intel SVML/MKL for exp, sin, etc)
+Physical units management.
+Optional auto-parallelization
+Data types of missing values ​​other than numeric types. (Original in Japanese: 数値型以外の欠損値のデータ型.)
+clearer documentation of every array manipulations
+A syntax more similar to that of R. (Original in Portuguese: Uma sintaxe mais similar a do R.)
+Performance efficiency
+Full support to type-hinting
+GPU support
+Having a wider community (both in numbers and in the diversity of its members)
+Emphasize on performance! And keep up good work - Numpy is great.
+rewrite the project in cpp instead of c and drop fortran
+More communication on quality and usage
+Implicit support for specialized compute hardware (GPU)
+Progress the masked array topic would be great, there were ideas on a replacement, not sure what the solution is but a more versatile and efficient solution would be awesome.
+Add static types
+user gufuncs
+Javascript API AND GPU support
+__array_module__
+Modern, more readable Sphinx theme. Deprecate unused or out of scope parts of the library.
+modularisation
+Even better interoperability with other array libraries.
+publish a definitive set of APIs
+enhancements to object arrays
+Support for ragged arrays

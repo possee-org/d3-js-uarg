@@ -1,0 +1,117 @@
+COMMENTS	SOURCE
+If you want people to use the library, reliability is a top priority.	Complete
+As NumPy is a library that is widely used both professionally and academically, it is certain to guarantee high performance and reliability. (Original in Portuguese: Como NumPy é uma biblioteca de vasto uso tanto em âmbito profissional como acadêmico, é certo garantir alta performance e confiabilidade.)	Complete
+I think reliability must be a top priority, no matter what. Being correct must be more important than any other aspect of NumPy. I believe that NumPy does a great job in this respect. I selected reliability as a top priority to keep seeing this.	Complete
+TBH I just gave this a very high priority because that is the aspect of the code I maintain I've been most focusing on lately, so I think it's a crucial selling-point for any library. I don't have a suggestion off the top of my head as far as numpy is concerned. I find most of the error messages I usually encounter are very helpful and I rarely find myself scratching my head over some error that looks unrelated to what I'm actually trying to do. That said, I do believe that issues related to user experience should be given a very high priority as numpy is the core package that everyone uses in my branch (astrophysics) and its behaviour inspires many lesser developers who need an example for excellence.	Complete
+Expanded testing features	Complete
+Improvements in the documentation so that people use the correct functions for their intended purpose.	Complete
+numpy still has a few inconsistencies originating its early days. Those should be cleaned up.	Complete
+Adopting property-based testing.  See eg https://doi.org/10.25080/majora-342d178e-016	Complete
+Again as a core component of the pydata ecosystem, reliability and API consistency is mandatory and numpy is known for that reliability, I would try to make sure it's sustainable.	Complete
+It’s already amazing. Please keep it that way by careful and measured pace of development, focusing on testing and bug fixes. 	Complete
+Sometimes the errors are too obscure	Complete
+I think NumPy is very reliable, I just think that it is important to maintain this reliability!	Complete
+Never had problems so far but I think it is super important.	Complete
+Open to this improving however possible.	Complete
+Same as performance. Reliability should always be top priority. as the core of many widely used python libraries, if numpy stops being reliable, it would be a big issue.	Complete
+Making sure it keeps compatibility with latest releases of e.g. matplotlib and pandas.	Complete
+I would like to make Numpy as an easy to install and use in any machine without any hurdles. we can provide an API alternative to run Numpy server in cloud to access anywhere without installation. Include more features to assist developer needs.	Complete
+Unification of some functions that do almost the same thing; harmonization of optional parameters. (Original in French: Unification de certaines fonctions qui effectuent presque la même chose ; harmonisation des paramètres optionnels.)	Complete
+I think it is already quite reliable, but that is a feature I value highly	Complete
+I have no reason to think that NumPy is unreliable, but reliability is always important	Complete
+It is fully reliable, keep it this way. Do not break backwards compatibility.	Complete
+Maintain the high level!	Complete
+Reduce bugs. (Original in Japanese: 减少bug.)	Complete
+Add type annotations for all input and output data.	Complete
+Numpy creates the foundation for many critical machine learning and deep learning. Should be bug free in their key functions	Complete
+I have no idea but it seems to me that it is a strength that you have to have. I would love to collaborate on whatever development priority is taken. (Original in Spanish: Tampoco tengo ideas pero me parece que es un fuerte que se tiene que tener. Me encantaría colaborar en cualquier prioridad que se tome de desarrollo.)	Complete
+It is difficult for a non-expert user to understand the precision of floating numbers and alike. Keep in mind that very often the users of NumPy don’t have any background in software development. (Original in Spanish: Es difícil para un usuario no experto darse cuenta sobre precisión de números flotantes o similares. Considerar que muchas veces gente que no viene del área de la computación entra al mundo de numpy.)	Complete
+NumPy is already very reliable. I just wanted to highlight that this quality standard should be maintained when implementing new features or increasing performance, i.e, reliability & new features fast / performance increase.	Complete
+I don't have any suggestions, I just think that reliability should be prioritized.	Complete
+Nothing in particular, simply that it should be a priority over most other things.	Complete
+Reliability of numpy is good. Just need to sustain it.	Complete
+Improve the visibility of current tests and add test capacity to show numerical stability between versions. The main idea would be to have easy ways to trace from strange behavior in my user tests to tests of the numpy components that I am using so that I can quickly discriminate the source of the problem. (Original in Spanish: Mejorar la visibilidad de los test actuales y añadir capacidad de test para mostrar la estabilidad numérica entre versiones. La idea principal sería tener formas fáciles de trazar desde un comportamiento extraño en mis test de usuario a los tests de los componentes de numpy que estoy empleando para poder discriminar rápidamente el origen del problema.)	Complete
+Currently, I have no issues with the reliability of NumPy, but this feature should be one of the main targets in future development. Furthermore, the interoperation between NumPy and many other modules/packages like Pytorch and Tensorflow should be guaranteed.	Complete
+Numpy is reliable right now, but I find it important that it continues to be.	Complete
+For scientific and academic work, reliability is key. When a calculation takes several hours/days to compute, NumPy has to work reliable. And it already does – at least I never had problems. However, this should always be taken in consideration when changing/adding code or features.	Complete
+Make an arrange more exact, for example if I put numpy.arrange (-1,1,0.001), sometimes it can reach values ​​of 0.5000000001 or 0.499999999, instead of 0.5 so sometimes the arrange is not so exact, it is not something so urgent, but it would be good if they could be more exact in certain operations. (Original in Spanish: Hacer más exacto un arrange, por ejemplo si pongo numpy.arrange(-1,1,0.001), a veces puede llegar a valores de 0.5000000001 o 0.499999999, en vez de 0.5 por lo que a veces los arrange no son tan exactos, no es algo tan urgente, pero sería bueno que pudieran ser más exactos en ciertas operaciones.)	Complete
+Make the API as backwards compatible as possible.	Complete
+Numpy one of the most reliable packages I am using. I never had a problem upgrading to a newer version and can't remember ever facing a numpy bug. Thanks lot for this quality.	Complete
+Reliability is currently sound. Am merely suggesting that reliability remain a priority.	Complete
+Just keep up the good work	Complete
+Truthfully, I am very happy with NumPy as it is right now. I have no complaints! But I couldn't say that in the previous slide. So, if I had to pick a priority, reliability is in general my highest priority because we use NumPy in production.	Complete
+Specifying the shape/strides of arrays can be very important for using NumPy arrays from C++ using pybind11. If you are not very careful about types, unnecessary copying occurs. Although NumPy usually allocates C-style arrays, having a guarantee ahead of time (when creating the first array) would avoid help avoid excessive memory usage.	Complete
+Don't break anything ;-)	Complete
+Reliability seems good as well, but its one of those things that requires continue maintenance	Complete
+Masked arrays do not always perform as expected.  I had to rewrite some of my code to not use masked arrays because I was getting incorrect results.  This might have been a documentation issue or a limitation in masked arrays so I didn't report it as a bug although it might have been.	Complete
+Able to support and load multiple platforms	Complete
+Stabilize the API	Complete
+numpy is already very reliable but maintaining this reliability is important when updating the package (I had a hard time ordering things because numpy already does everything I need it to + more, is relatively easy to use, and has some of the best documentation I have ever seen)	Complete
+I use numpy for my calculations. I want to know that they are correct.	Complete
+The reliability is already good. New developments should not ruin that.	Complete
+I count on that numpy work as expected in my work and free time	Complete
+Just continue doing the excellent work on reliability that the core team has been doing so far.	Complete
+Stay as it is. (Original in French: Rester comme ce l’est.)	Complete
+make apis more consistent to reduce accidental bugs	Complete
+The ranking was tough for me to do.  I should say, I ranked reliability as a high priority not because I thought numpy was not reliable, but because I view that reliability is absolutely critical.	Complete
+Stable API for GPU	Complete
+No regressions please	Complete
+Talk to community to create new test cases from real-world applications.	Complete
+Make sure small version changes don’t break existing features of the package.	Complete
+Elevation to quad precision where loss of precision is detected	Complete
+Communication of any changes that are not backwards compatible. Keeping strong testing standards to ensure new features don't break existing code.	Complete
+I have no issues currently, and ensuring that exhaustive testing is performed for future changes will ensure this stays true	Complete
+Fewer breaking changes. Reproducibility of NumPy-based work is not great.	Complete
+Long term stability and backward compatibility	Complete
+I've never had reliability issues with the parts of numpy I use. I use mainstream hardware. But I perceive numpy as being in a foundational place in the stack, so reliability is crucial and difficult to maintain. Keep on the good work in prioritizing it.	Complete
+Interpreting reliability as reproducibility, avoid numerical differences between different platforms (eg processors). (Original in Spanish: Interpretando fiabilidad como reproducibilidad, evitar diferencias numéricas entre distintas plataformas (p.ej. procesadores).)	Complete
+More consistency	Complete
+I think clarifying a lot of the c like behaviour and edge cases could help. Possibly runtime warning for view vs copy	Complete
+None, I am not well versed in computer science but believe reliability should be a high priority in general.	Complete
+It's good. Just don't trade new feature for quality !	Complete
+Expand on NEP 18 please, as the clarity of the NumPy API is crucial for the libraries that build off of it	Complete
+Technical support is hard on both sides of the fence. The need for technical support should be minimized by providing stable solutions with a traceable log of current status.	Complete
+I want to know that I will not encounter problems with it.	Complete
+Reliability (in the sense of presenting a long term stable API in particular) is something that needs to be improved in numpy.	Complete
+In my mind, reliability means decreasing the chance that unexpected errors or wrong results can occur due to e.g. rare data cases, or a user's subtle misunderstanding of function semantics. I don't consider myself knowledgeable enough on np's internals or development to really suggest specific plans for how to improve reliability, but I imagine that better documentation can help prevent users' from doing operations they don't realize are "unsafe". Also more built-in checking could be added, though of course this needs to be balanced against performance impact. As another enhancement that partly touches reliability, I would appreciate better support for missing data. This is a common cause of runtime errors that are not immediately noticed in development, both directly in my code and when passing data to other libraries. (I would especially appreciate missing data functionality that integrates well with pandas and similar parts of the ecosystem.)  Another very different idea would be to enhance support for static type checking, via offering a more official distribution of type annotations and eventually a full-featured type system such that checkers could enforce data types and shapes.	Complete
+Nothing specific here -- but attention to reliability is always a good idea.	Complete
+I don't have any specific advice, NumPy already seems highly reliable, but as a core package for most of my stack I think reliability is critically important to maintain. 	Complete
+Keep up the great standards!	Complete
+Keep tackling bugs as they pop up.	Complete
+Critical business decisions can be based on pipelines using Numpy. As such, (numerical) reliability should always be the top priority.	Complete
+Reliability is very good and that should stay and not be compromised by moving other things up in priority. That is why I put it on position 1.	Complete
+The reliability is something I'm interested in it, because different versions of NumPy may not be compatible.	Complete
+Just like it is done today (unit testing)	Complete
+Inconsistencies in the dtypes. (Original in Spanish: Inconsistencias en los dtypes.)	Complete
+I am happy that the content is highly reliable. I am happy that the documents can be provided in Japanese, but I would like you to do so while maintaining reliability. (Original in Japanese: 内容的な信頼度が高いと嬉しい. 日本語での文書提供が可能だと嬉しいが、信頼度を保ちながら行って欲しい.)	Complete
+Fix bugs!	Complete
+Make tree-structured page of reference doc. (Original in Japanese: ツリーで構造化されたリファレンスページの作成.)	Complete
+Assess security aspects in software development to avoid malicious use of open source. (Original in Portuguese: Avaliar aspectos de segurança nos códigos desenvolvidos para não permitir fácil invasão ou uso malicioso de código aberto.)	Complete
+Make sure it is accessible	Complete
+Having multiple kind of automated tests and a high coverage codebase.	Complete
+Making sure bugs are quickly addressed and fixed, improving the usability on windows and other platforms	Complete
+Reliability goes hand in hand with API consistency. Recent version made some expressions just harder, especially when object arrays are involved.  Some rules are convenient, but not consistent - e.g., it is not obvious len(numpy.array([[1,2,3],[1,2,3]]).shape) != len(numpy.array([[1,2,3],[2,3]]).shape).	Complete
+I'm not sure how reliability could be improved, but I believe reliability must remain a very high priority for NumPy.	Complete
+Reliability is already excellent. It remains a top priority. Tests coverage is key, naturally.	Complete
+Numpy is doing a great job in terms of stability and reliability, not sure how to increase it, it just seems an important point for a package that is at the root of all the scientific python ecosystem.	Complete
+I find numpy quite reliable — I just think this needs to remain true above all other potential changes.	Complete
+By making it available to more and more programming languages	Complete
+NumPy generally sets itself high standards on things like backward compatibility and a deprecation process for changes. Keep this up please.	Complete
+Nothing out of the ordinary, I feel that NumPy is in a good place right now with regards to its reliability.	Complete
+testing, testing and probably testing. The number of architectures is growing in the HPC world, amd64 has competitors with arm64 and ppc64le. Ensuring reliability on those platforms is of crucial importance.	Complete
+Reinforce the commitment that NumPy will remain open to everyone, considering changes to license terms as recently proposed would cause concerns as to future reliability of NumPy for a large portion of the industry. For me personally, I would not anymore contribute to NumPy, as the essence of OSS would be killed.	Complete
+I find NumPy to be very reliable. Given its position at the core of the Scientific Python ecosystem, I would like to see NumPy keep the same level of reliability in the future.	Complete
+reduce the API surface and dtype quirks	Complete
+Bug fixes. More unit tests. Most of my code contributions were necessary because of lack of code coverage. They were corner cases, but obvious ones for the most part.	Complete
+Increase testing, instrumented fuzzing	Complete
+ensure that version release don't impact code within numpy.	Complete
+Reducing scope: clarifying switch APIs are supported and deprecating/removing edge behavior (e.g., indexing)	Complete
+	
+Keep doing what you are. Continue to maintain good backwards compatibility (we test against versions back to 1.14)	Partial
+I haven’t noticed any problems with reliability – I just think it’s more important than the rest.	Partial
+Again nothing new here as well, Numpy is reliable and I hope it stays that way	Partial
+Facilitate the publication of issues, and find ways to finance the solution of these issues. (Original in Spanish: Facilitar la publicación de issues, y buscar formas de financiar la solución de estos issues.)	Partial
+Be robust to multiple runtimes (eg multiple OpenMP implementations) in the same interpreter. This does happen, and leads to subtle breakage.	Partial
+Numpy is already pretty reliable :) I guess being as explicit as possible with error strings is always helpful. I also found that if i happen to be stuck with a numpy array with the object dtype (a large array was saved within a list of lists) then it can get pretty messy to go back to ndarray. I had to recursively call np.vstack on the sub-arrays, even though everything was a float.	Partial
+NumPy is becoming the de facto way of handling data, it should strive to be the best possible tool.	Partial
+Some tiny changes matter (string representations for instance). When they change, some tests start to fail.	Partial
