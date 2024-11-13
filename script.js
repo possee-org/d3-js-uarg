@@ -16,23 +16,25 @@ d3.json(url).then(data => {
 //Filtering and mapping relevant information
 d3.json(url).then(data => {
     const ages = data.map(d => +d["Q2.2"]).filter(d => !isNaN(d));
-    const genres = data.map(d => d["Q2.3"]).filter(d => d);
-    const educationLevels = data.map(d => d["Q2.7"]).filter(d => d);
+    const genders = data.map(d => d["Q2.3"]).filter(d => d && d !== "What is your gender?" && d !== '{"ImportId":"QID97"}');
+    const educationLevels = data
+    .map(d => d["Q2.7"])
+    .filter(d => d && d !== "What is the highest degree or level of education you have completed? - Selected Choice" && d !== '{"ImportId":"QID128"}');
     const experienceLevels = data.map(d => d["Q2.13"]).filter(d => d);
     const frequencyLevels = data.map(d => d["Q2.14"]).filter(d => d && d !== "How often do you use NumPy?" && !d.includes("ImportId"));
 
     //Calling functions to visualize data
-    createBarChartAges(ages);
-    createPieChartGenres(genres);
-    createBarChartEducation(educationLevels);
-    createPieChartExperience(experienceLevels);
-    createBarChartFrequency(frequencyLevels);
+    createBarChartAges(ages, "#chart1");
+    createPieChartGenders(genders, "#chart2");
+    createBarChartEducation(educationLevels, "#chart3");
+    createPieChartExperience(experienceLevels, "#chart4");
+    createBarChartFrequency(frequencyLevels, "#chart5");
 }).catch(error => console.error('An error ocurred when loading the JSON file: ', error));
 
-function createBarChartAges(ages) {
+function createBarChartAges(ages, container) {
     const width = 500;
     const height = 300;
-    const margin = {top: 20, right: 20, bottom: 30, left: 40};
+    const margin = { top: 40, right: 20, bottom: 30, left: 40 };
 
     const ageCounts = d3.rollups(ages, v => v.length, d => {
         if (d < 20) return 'Below 20';
@@ -40,93 +42,170 @@ function createBarChartAges(ages) {
         else if (d < 40) return '30-39';
         else if (d < 50) return '40-49';
         else return '50+';
+    }).sort((a, b) => {
+        const ageOrder = ['Below 20', '20-29', '30-39', '40-49', '50+'];
+        return ageOrder.indexOf(a[0]) - ageOrder.indexOf(b[0]);
     });
 
-    const svg = d3.select("body").append("svg")
-        .attr("width", width)
-        .attr("height", height);
+    const svg = d3.select(container).append("svg")
+                  .attr("width", width)
+                  .attr("height", height);
+
+    svg.append("text")
+       .attr("x", width / 2)
+       .attr("y", margin.top / 2)
+       .attr("text-anchor", "middle")
+       .style("font-size", "16px")
+       .style("font-weight", "bold")
+       .text("Age");
 
     const x = d3.scaleBand()
-        .domain(ageCounts.map(d => d[0]))
-        .range([margin.left, width - margin.right])
-        .padding(0.1);
+                .domain(ageCounts.map(d => d[0]))
+                .range([margin.left, width - margin.right])
+                .padding(0.1);
 
     const y = d3.scaleLinear()
-        .domain([0, d3.max(ageCounts, d => d[1])]).nice()
-        .range([height - margin.bottom, margin.top]);
+                .domain([0, d3.max(ageCounts, d => d[1])]).nice()
+                .range([height - margin.bottom, margin.top]);
 
     svg.append("g")
-        .selectAll("rect")
-        .data(ageCounts)
-        .join("rect")
-        .attr("x", d => x(d[0]))
-        .attr("y", d => y(d[1]))
-        .attr("height", d => y(0) - y(d[1]))
-        .attr("width", x.bandwidth())
-        .attr("fill", "steelblue");
-    
-    svg.append("g")
-        .attr("transform", `translate(0,${height - margin.bottom})`)
-        .call(d3.axisBottom(x));
+       .selectAll("rect")
+       .data(ageCounts)
+       .enter()
+       .append("rect")
+       .attr("x", d => x(d[0]))
+       .attr("y", y(0))
+       .attr("height", 0)
+       .attr("width", x.bandwidth())
+       .attr("fill", "steelblue")
+       .transition()
+       .duration(1000)
+       .attr("y", d => y(d[1]))
+       .attr("height", d => y(0) - y(d[1]));
 
     svg.append("g")
-        .attr("transform", `translate(${margin.left},0)`)
-        .call(d3.axisLeft(y));
+       .attr("transform", `translate(0,${height - margin.bottom})`)
+       .call(d3.axisBottom(x));
+
+    svg.append("g")
+       .attr("transform", `translate(${margin.left},0)`)
+       .call(d3.axisLeft(y));
 }
 
-function createPieChartGenres(genres) {
+
+function createPieChartGenders(genders, container) {
     const width = 300;
     const height = 300;
     const radius = Math.min(width, height) / 2;
 
-    const genderCounts = d3.rollups(genres, v => v.length, d => d);
-    
-    const svg = d3.select("body").append("svg")
+    const genderCounts = d3.rollups(genders, v => v.length, d => d);
+
+    const svg = d3.select(container).append("svg")
         .attr("width", width)
-        .attr("height", height)
+        .attr("height", height + 50)  // Espacio extra solo para la leyenda
         .append("g")
-        .attr("transform", `translate(${width / 2},${height / 2})`);
+        .attr("transform", `translate(${width / 2},${height / 2 + 20})`);
+
+    d3.select(container).select("svg").append("text")
+        .attr("x", width / 2)
+        .attr("y", 20)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("font-weight", "bold")
+        .text("Gender");
 
     const color = d3.scaleOrdinal()
         .domain(genderCounts.map(d => d[0]))
         .range(d3.schemeCategory10);
 
     const pie = d3.pie().value(d => d[1]);
+    const arc = d3.arc().innerRadius(0).outerRadius(radius);
+    const outerArc = d3.arc().innerRadius(radius * 1.1).outerRadius(radius * 1.1);
 
-    const arc = d3.arc()
-        .innerRadius(0)
-        .outerRadius(radius);
-    
-    svg.selectAll("path")
+    const arcs = svg.selectAll("arc")
         .data(pie(genderCounts))
-        .join("path")
+        .enter()
+        .append("g")
+        .attr("class", "arc");
+
+    arcs.append("path")
         .attr("d", arc)
         .attr("fill", d => color(d.data[0]));
+
+    arcs.append("text")
+        .attr("transform", d => {
+            const pos = outerArc.centroid(d);
+            const scale = genderCounts.length > 5 ? 1.3 : 1.2;
+            pos[0] *= scale;
+            pos[1] *= scale;
+            return `translate(${pos})`;
+        })
+        .attr("text-anchor", d => d.endAngle > Math.PI ? 'end' : 'start')
+        .style("font-size", "12px")
+        .text(d => `${d.data[0]}: ${d.data[1]}`);
+
+    const legend = d3.select(container).append('div')
+        .style('position', 'relative')
+        .style('font-size', '12px')
+        .style('font-family', 'Arial, sans-serif')
+        .style('margin-top', '20px');
+
+    genderCounts.forEach(d => {
+        legend.append('div')
+            .style('display', 'flex')
+            .style('align-items', 'center')
+            .style('margin-bottom', '5px')
+            .html(`
+                <div style="width: 12px; height: 12px; background-color: ${color(d[0])}; margin-right: 8px;"></div>
+                <div>${d[0]}: ${d[1]}</div>
+            `);
+    });
 }
 
-function createBarChartEducation(educationLevels) {
-    const width = 500;
-    const height = 300;
-    const margin = {top: 20, right: 20, bottom: 30, left: 40};
+
+function createBarChartEducation(educationLevels, container) {
+    const width = 800;
+    const height = 500;
+    const margin = {top: 20, right: 20, bottom: 200, left: 50};
 
     const educationCounts = d3.rollups(educationLevels, v => v.length, d => d);
 
-    const svg = d3.select("body").append("svg")
+    const normalizedEducationCounts = educationCounts.map(([label, count]) => {
+        const normalizedLabel = label.replace(/\(.*\)/, '').trim();
+        return [normalizedLabel, count];
+    });
+
+    const educationOrder = [
+        "Less than a high school diploma",
+        "High school degree or equivalent",
+        "Bachelor's degree or equivalent",
+        "Master's degree",
+        "Doctorate",
+        "Other"
+    ];
+
+    const sortedEducationCounts = normalizedEducationCounts.sort((a, b) => {
+        return educationOrder.indexOf(a[0]) - educationOrder.indexOf(b[0]);
+    });
+
+    console.log("Sorted Education Counts:", sortedEducationCounts);
+
+    const svg = d3.select(container).append("svg")
         .attr("width", width)
         .attr("height", height);
 
     const x = d3.scaleBand()
-        .domain(educationCounts.map(d => d[0]))
+        .domain(sortedEducationCounts.map(d => d[0]))
         .range([margin.left, width - margin.right])
         .padding(0.1);
 
     const y = d3.scaleLinear()
-        .domain([0, d3.max(educationCounts, d => d[1])]).nice()
+        .domain([0, d3.max(sortedEducationCounts, d => d[1])]).nice()
         .range([height - margin.bottom, margin.top]);
-    
+
     svg.append("g")
         .selectAll("rect")
-        .data(educationCounts)
+        .data(sortedEducationCounts)
         .join("rect")
         .attr("x", d => x(d[0]))
         .attr("y", d => y(d[1]))
@@ -146,7 +225,10 @@ function createBarChartEducation(educationLevels) {
         .call(d3.axisLeft(y));
 }
 
-function createPieChartExperience(experienceLevels) {
+
+
+
+function createPieChartExperience(experienceLevels, container) {
     const experienceCounts = {};
     experienceLevels.forEach(level => {
         experienceCounts[level] = (experienceCounts[level] || 0) + 1;
@@ -160,7 +242,7 @@ function createPieChartExperience(experienceLevels) {
 
     const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-    const svg = d3.select('body')
+    const svg = d3.select(container)
                   .append('svg')
                   .attr('width', width)
                   .attr('height', height)
@@ -202,7 +284,7 @@ function createPieChartExperience(experienceLevels) {
 }
 
 
-function createBarChartFrequency(frequencyLevels) {
+function createBarChartFrequency(frequencyLevels, container) {
     const frequencyCounts = {};
     frequencyLevels.forEach(level => {
         frequencyCounts[level] = (frequencyCounts[level] || 0) + 1;
@@ -219,7 +301,7 @@ function createBarChartFrequency(frequencyLevels) {
     const height = 300;
     const margin = { top: 40, right: 20, bottom: 30, left: 40 };
 
-    const svg = d3.select('body')
+    const svg = d3.select(container)
         .append('svg')
         .attr('width', width)
         .attr('height', height)
