@@ -68,41 +68,115 @@ function createBarChartAges(ages, container) {
                 .domain([0, d3.max(ageCounts, d => d[1])]).nice()
                 .range([height - margin.bottom, margin.top]);
 
-    svg.append("g")
-       .selectAll("rect")
-       .data(ageCounts)
-       .enter()
-       .append("rect")
-       .attr("x", d => x(d[0]))
-       .attr("y", y(0))
-       .attr("height", 0)
-       .attr("width", x.bandwidth())
-       .attr("fill", "steelblue")
-       .transition()
-       .duration(1000)
-       .attr("y", d => y(d[1]))
-       .attr("height", d => y(0) - y(d[1]));
+    const xAxisGroup = svg.append('g')
+                          .attr('transform', `translate(0,${height - margin.bottom})`);
 
-    svg.append("g")
-       .attr("transform", `translate(0,${height - margin.bottom})`)
-       .call(d3.axisBottom(x));
+    const yAxisGroup = svg.append('g')
+                          .attr('transform', `translate(${margin.left},0)`);
 
-    svg.append("g")
-       .attr("transform", `translate(${margin.left},0)`)
-       .call(d3.axisLeft(y));
+    function renderBars(data) {
+        // Render bars
+        const bars = svg.selectAll('rect')
+            .data(data, d => d[0]);
+
+        bars.enter()
+            .append('rect')
+            .attr('x', d => x(d[0]))
+            .attr('y', y(0))
+            .attr('height', 0)
+            .attr('width', x.bandwidth())
+            .attr('fill', 'steelblue')
+            .merge(bars)
+            .transition()
+            .duration(1000)
+            .attr('x', d => x(d[0]))
+            .attr('y', d => y(d[1]))
+            .attr('height', d => y(0) - y(d[1]));
+
+        bars.exit()
+            .transition()
+            .duration(1000)
+            .attr('y', y(0))
+            .attr('height', 0)
+            .remove();
+
+        // Add data labels on top of the bars
+        const labels = svg.selectAll('.label')
+            .data(data, d => d[0]);
+
+        labels.enter()
+            .append('text')
+            .attr('class', 'label')
+            .attr('x', d => x(d[0]) + x.bandwidth() / 2)
+            .attr('y', y(0))
+            .attr('text-anchor', 'middle')
+            .style('font-size', '12px')
+            .style('fill', 'black')
+            .text(d => d[1])
+            .merge(labels)
+            .transition()
+            .duration(1000)
+            .attr('y', d => y(d[1]) - 5);
+
+        labels.exit()
+            .transition()
+            .duration(1000)
+            .attr('y', y(0))
+            .remove();
+
+        xAxisGroup.transition()
+            .duration(1000)
+            .call(d3.axisBottom(x));
+
+        yAxisGroup.transition()
+            .duration(1000)
+            .call(d3.axisLeft(y));
+    }
+
+    renderBars(ageCounts);
+
+    // Add filtering options for age groups
+    const filters = ['Below 20', '20-29', '30-39', '40-49', '50+'];
+    const checkboxesContainer = d3.select(container).append('div');
+
+    const checkboxes = filters.map(filter => {
+        const checkboxContainer = checkboxesContainer.append('div');
+
+        const checkbox = checkboxContainer.append('input')
+            .attr('type', 'checkbox')
+            .attr('id', `checkbox-${filter}`)
+            .attr('checked', true);
+
+        checkboxContainer.append('label')
+            .attr('for', `checkbox-${filter}`)
+            .text(filter);
+
+        return { filter, checkbox };
+    });
+
+    checkboxesContainer.selectAll('input')
+        .on('change', function () {
+            const selectedFilters = checkboxes
+                .filter(d => d.checkbox.property('checked'))
+                .map(d => d.filter);
+
+            const filteredData = ageCounts.filter(d => selectedFilters.includes(d[0]));
+            renderBars(filteredData);
+        });
 }
 
 
+
 function createPieChartGenders(genders, container) {
-    const width = 300;
-    const height = 300;
+    const width = 700;
+    const height = 100;
     const radius = Math.min(width, height) / 2;
 
     const genderCounts = d3.rollups(genders, v => v.length, d => d);
 
     const svg = d3.select(container).append("svg")
         .attr("width", width)
-        .attr("height", height + 50)  // Espacio extra solo para la leyenda
+        .attr("height", height + 50)
         .append("g")
         .attr("transform", `translate(${width / 2},${height / 2 + 20})`);
 
@@ -128,9 +202,37 @@ function createPieChartGenders(genders, container) {
         .append("g")
         .attr("class", "arc");
 
+    // Tooltip
+    const tooltip = d3.select(container).append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0)
+        .style("position", "absolute")
+        .style("background", "rgba(0, 0, 0, 0.7)")
+        .style("color", "white")
+        .style("padding", "5px")
+        .style("border-radius", "3px")
+        .style("pointer-events", "none");
+
     arcs.append("path")
         .attr("d", arc)
-        .attr("fill", d => color(d.data[0]));
+        .attr("fill", d => color(d.data[0]))
+        .on("mouseover", function(event, d) {
+            d3.select(this).transition().duration(200)
+                .attr("d", d3.arc().innerRadius(0).outerRadius(radius + 10));
+
+            tooltip.transition().duration(200)
+                .style("opacity", .9);
+            tooltip.html(`${d.data[0]}: ${d.data[1]} users`)
+                .style("left", (event.pageX + 5) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", function() {
+            d3.select(this).transition().duration(200)
+                .attr("d", arc);
+
+            tooltip.transition().duration(500)
+                .style("opacity", 0);
+        });
 
     arcs.append("text")
         .attr("transform", d => {
@@ -161,6 +263,7 @@ function createPieChartGenders(genders, container) {
             `);
     });
 }
+
 
 
 function createBarChartEducation(educationLevels, container) {
@@ -194,6 +297,14 @@ function createBarChartEducation(educationLevels, container) {
         .attr("width", width)
         .attr("height", height);
 
+    svg.append("text")
+       .attr("x", width / 2)
+       .attr("y", margin.top)
+       .attr("text-anchor", "middle")
+       .style("font-size", "16px")
+       .style("font-weight", "bold")
+       .text("Education levels of users");
+
     const x = d3.scaleBand()
         .domain(sortedEducationCounts.map(d => d[0]))
         .range([margin.left, width - margin.right])
@@ -203,7 +314,18 @@ function createBarChartEducation(educationLevels, container) {
         .domain([0, d3.max(sortedEducationCounts, d => d[1])]).nice()
         .range([height - margin.bottom, margin.top]);
 
-    svg.append("g")
+    const tooltip = d3.select(container).append("div")
+        .attr("class", "tooltip")
+        .style("position", "absolute")
+        .style("visibility", "hidden")
+        .style("background", "rgba(0, 0, 0, 0.7)")
+        .style("color", "white")
+        .style("border-radius", "5px")
+        .style("padding", "10px")
+        .style("font-size", "12px")
+        .style("pointer-events", "none");
+
+    const bars = svg.append("g")
         .selectAll("rect")
         .data(sortedEducationCounts)
         .join("rect")
@@ -211,7 +333,38 @@ function createBarChartEducation(educationLevels, container) {
         .attr("y", d => y(d[1]))
         .attr("height", d => y(0) - y(d[1]))
         .attr("width", x.bandwidth())
-        .attr("fill", "teal");
+        .attr("fill", "teal")
+        .on("mouseover", function(event, d) {
+            d3.select(this)
+                .attr("fill", "orange")
+                .transition()
+                .duration(200)
+                .ease(d3.easeBounce);
+
+            tooltip.style("visibility", "visible")
+                .html(`Education Level: ${d[0]}<br>Count: ${d[1]}`)
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 30) + "px");
+        })
+        .on("mouseout", function(event, d) {
+            d3.select(this)
+                .attr("fill", "teal")
+                .transition()
+                .duration(200);
+
+            tooltip.style("visibility", "hidden");
+        });
+
+    const labels = svg.append("g")
+        .selectAll("text")
+        .data(sortedEducationCounts)
+        .join("text")
+        .attr("x", d => x(d[0]) + x.bandwidth() / 2)
+        .attr("y", d => y(d[1]) - 5)
+        .attr("text-anchor", "middle")
+        .style("font-size", "12px")
+        .style("fill", "black")
+        .text(d => d[1]);
 
     svg.append("g")
         .attr("transform", `translate(0,${height - margin.bottom})`)
@@ -224,6 +377,8 @@ function createBarChartEducation(educationLevels, container) {
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(y));
 }
+
+
 
 
 
@@ -290,12 +445,12 @@ function createBarChartFrequency(frequencyLevels, container) {
         frequencyCounts[level] = (frequencyCounts[level] || 0) + 1;
     });
 
-    const barData = Object.entries(frequencyCounts)
+    const initialData = Object.entries(frequencyCounts)
         .map(([key, value]) => ({ label: key, count: value }))
         .filter(d => d.label !== "Yearly");
 
     const frequencyOrder = ["Daily", "Weekly", "Monthly", "Less frequently"];
-    barData.sort((a, b) => frequencyOrder.indexOf(a.label) - frequencyOrder.indexOf(b.label));
+    initialData.sort((a, b) => frequencyOrder.indexOf(a.label) - frequencyOrder.indexOf(b.label));
 
     const width = 500;
     const height = 300;
@@ -317,49 +472,111 @@ function createBarChartFrequency(frequencyLevels, container) {
         .text("How often do you use NumPy?");
 
     const x = d3.scaleBand()
-        .domain(barData.map(d => d.label))
         .range([0, width - margin.left - margin.right])
         .padding(0.1);
 
     const y = d3.scaleLinear()
-        .domain([0, d3.max(barData, d => d.count)])
-        .nice()
         .range([height - margin.top - margin.bottom, 0]);
 
-    svg.selectAll('.bar')
-        .data(barData)
-        .enter()
-        .append('rect')
-        .attr('class', 'bar')
-        .attr('x', d => x(d.label))
-        .attr('y', height - margin.top - margin.bottom)
-        .attr('width', x.bandwidth())
-        .attr('height', 0)
-        .attr('fill', 'steelblue')
-        .transition()
-        .duration(1000)
-        .attr('y', d => y(d.count))
-        .attr('height', d => y(0) - y(d.count));
+    const xAxisGroup = svg.append('g')
+        .attr('class', 'x-axis')
+        .attr('transform', `translate(0,${height - margin.top - margin.bottom})`);
 
-    svg.selectAll('.label')
-        .data(barData)
-        .enter()
-        .append('text')
-        .attr('class', 'label')
-        .attr('x', d => x(d.label) + x.bandwidth() / 2)
-        .attr('y', height - margin.top - margin.bottom)
-        .attr('text-anchor', 'middle')
-        .style('font-size', '12px')
-        .style('fill', 'black')
-        .text(d => d.count)
-        .transition() 
-        .duration(1000)
-        .attr('y', d => y(d.count) - 5);
+    const yAxisGroup = svg.append('g')
+        .attr('class', 'y-axis');
 
-    svg.append('g')
-        .attr('transform', `translate(0,${height - margin.top - margin.bottom})`)
-        .call(d3.axisBottom(x));
+    function renderBars(data) {
+        x.domain(data.map(d => d.label));
+        y.domain([0, d3.max(data, d => d.count)]).nice();
 
-    svg.append('g')
-        .call(d3.axisLeft(y));
+        const bars = svg.selectAll('.bar')
+            .data(data, d => d.label);
+
+        bars.enter()
+            .append('rect')
+            .attr('class', 'bar')
+            .attr('x', d => x(d.label))
+            .attr('y', y(0))
+            .attr('width', x.bandwidth())
+            .attr('height', 0)
+            .attr('fill', 'steelblue')
+            .merge(bars)
+            .transition()
+            .duration(1000)
+            .attr('x', d => x(d.label))
+            .attr('y', d => y(d.count))
+            .attr('height', d => y(0) - y(d.count));
+
+        bars.exit()
+            .transition()
+            .duration(1000)
+            .attr('y', y(0))
+            .attr('height', 0)
+            .remove();
+
+        const labels = svg.selectAll('.label')
+            .data(data, d => d.label);
+
+        labels.enter()
+            .append('text')
+            .attr('class', 'label')
+            .attr('x', d => x(d.label) + x.bandwidth() / 2)
+            .attr('y', y(0))
+            .attr('text-anchor', 'middle')
+            .style('font-size', '12px')
+            .style('fill', 'black')
+            .text(d => d.count)
+            .merge(labels)
+            .transition()
+            .duration(1000)
+            .attr('y', d => y(d.count) - 5);
+
+        labels.exit()
+            .transition()
+            .duration(1000)
+            .attr('y', y(0))
+            .remove();
+
+        xAxisGroup.transition()
+            .duration(1000)
+            .call(d3.axisBottom(x));
+
+        yAxisGroup.transition()
+            .duration(1000)
+            .call(d3.axisLeft(y));
+    }
+
+    renderBars(initialData);
+
+    const filters = ["Daily", "Weekly", "Monthly", "Less frequently"];
+    const checkboxesContainer = d3.select(container).append("div");
+
+    const checkboxes = filters.map(filter => {
+        const checkboxContainer = checkboxesContainer.append("div");
+
+        const checkbox = checkboxContainer.append("input")
+            .attr("type", "checkbox")
+            .attr("id", `checkbox-${filter}`)
+            .attr("checked", true);
+
+        checkboxContainer.append("label")
+            .attr("for", `checkbox-${filter}`)
+            .text(filter);
+
+        return { filter, checkbox };
+    });
+
+    checkboxesContainer.selectAll("input")
+        .on("change", function () {
+            const selectedFilters = checkboxes
+                .filter(d => d.checkbox.property("checked"))
+                .map(d => d.filter);
+
+            const filteredData = initialData.filter(d => selectedFilters.includes(d.label));
+            renderBars(filteredData);
+        });
 }
+
+
+
+
