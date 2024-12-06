@@ -5,12 +5,10 @@ const Barchart = () => {
   const ref = useRef();
 
   useEffect(() => {
-    // set the dimensions and margins of the graph
     const margin = { top: 30, right: 30, bottom: 70, left: 60 },
       width = 460 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
-    // append the svg object to the body of the page
     const svg = d3
       .select(ref.current)
       .append("svg")
@@ -19,42 +17,68 @@ const Barchart = () => {
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // Parse the Data
-    d3.csv(
-      "https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/7_OneCatOneNum_header.csv"
-    ).then(function (data) {
-      // X axis
-      const x = d3
-        .scaleBand()
-        .range([0, width])
-        .domain(data.map((d) => d.Country))
-        .padding(0.2);
-      svg
-        .append("g")
-        .attr("transform", `translate(0, ${height})`)
-        .call(d3.axisBottom(x))
-        .selectAll("text")
-        .attr("transform", "translate(-10,0)rotate(-45)")
-        .style("text-anchor", "end");
+    const url = "/data.json";
 
-      // Add Y axis
-      const y = d3.scaleLinear().domain([0, 13000]).range([height, 0]);
-      svg.append("g").call(d3.axisLeft(y));
+    d3.json(url)
+      .then((data) => {
+        const counts = d3.rollup(
+          data,
+          (v) => v.length,
+          (d) => d["Q2.4"]
+        );
 
-      // Bars
-      svg
-        .selectAll("mybar")
-        .data(data)
-        .join("rect")
-        .attr("x", (d) => x(d.Country))
-        .attr("y", (d) => y(d.Value))
-        .attr("width", x.bandwidth())
-        .attr("height", (d) => height - y(d.Value))
-        .attr("fill", "#5f0f40");
-    });
+        const excludeCategories = [
+          "What language do you prefer to use?",
+          "ImportId:QID98",
+        ];
+
+        const processedData = Array.from(counts, ([key, value]) => ({
+          language: key,
+          count: value,
+        })).filter((d) => !excludeCategories.includes(d.language));
+
+        console.log(processedData);
+
+        const x = d3
+          .scaleBand()
+          .domain(processedData.map((d) => d.language))
+          .range([0, width])
+          .padding(0.2);
+
+        const y = d3
+          .scaleLinear()
+          .domain([0, d3.max(processedData, (d) => d.count)])
+          .nice()
+          .range([height, 0]);
+
+        svg
+          .append("g")
+          .attr("transform", `translate(0, ${height})`)
+          .call(d3.axisBottom(x))
+          .selectAll("text")
+          .attr("transform", "rotate(-45)")
+          .style("text-anchor", "end");
+
+        svg.append("g").call(d3.axisLeft(y));
+
+        svg
+          .selectAll("rect")
+          .data(processedData)
+          .join("rect")
+          .attr("x", (d) => x(d.language))
+          .attr("y", (d) => y(d.count))
+          .attr("width", x.bandwidth())
+          .attr("height", (d) => height - y(d.count))
+          .attr("fill", "#5f0f40");
+      })
+      .catch((error) => {
+        console.error("Error cargando los datos:", error);
+      });
   }, []);
 
-  return <svg width={460} height={400} id="barchart" ref={ref} />;
+  return <div ref={ref} />;
 };
 
 export default Barchart;
+
+
