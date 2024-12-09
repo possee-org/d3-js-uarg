@@ -1,12 +1,12 @@
 import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 
-const Barchart = () => {
+const Barchart = ({ question }) => {
   const ref = useRef();
 
   useEffect(() => {
     const margin = { top: 30, right: 30, bottom: 70, left: 60 },
-      width = 460 - margin.left - margin.right,
+      width = 800 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
     const svg = d3
@@ -24,7 +24,7 @@ const Barchart = () => {
         const counts = d3.rollup(
           data,
           (v) => v.length,
-          (d) => d["Q2.4"]
+          (d) => d[question]
         );
 
         const processedData = Array.from(counts, ([key, value]) => ({
@@ -35,7 +35,7 @@ const Barchart = () => {
             (d) =>
               d.language &&
               !d.language.includes("ImportId") &&
-              d.language !== "What language do you prefer to use?"
+              d.language !== question
           )
           .sort((a, b) => b.count - a.count);
 
@@ -96,12 +96,13 @@ const Barchart = () => {
       .catch((error) => {
         console.error("Error cargando los datos:", error);
       });
-  }, []);
+  }, [question]);
 
   return <div ref={ref} />;
 };
 
 export default Barchart;
+
 
 
 
