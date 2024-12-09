@@ -27,17 +27,17 @@ const Barchart = () => {
           (d) => d["Q2.4"]
         );
 
-        const excludeCategories = [
-          "What language do you prefer to use?",
-          "ImportId:QID98",
-        ];
-
         const processedData = Array.from(counts, ([key, value]) => ({
           language: key,
           count: value,
-        })).filter((d) => !excludeCategories.includes(d.language));
-
-        console.log(processedData);
+        }))
+          .filter(
+            (d) =>
+              d.language &&
+              !d.language.includes("ImportId") &&
+              d.language !== "What language do you prefer to use?"
+          )
+          .sort((a, b) => b.count - a.count); // Ordenar de mayor a menor
 
         const x = d3
           .scaleBand()
@@ -61,7 +61,8 @@ const Barchart = () => {
 
         svg.append("g").call(d3.axisLeft(y));
 
-        svg
+        // Dibujar las barras
+        const bars = svg
           .selectAll("rect")
           .data(processedData)
           .join("rect")
@@ -70,6 +71,34 @@ const Barchart = () => {
           .attr("width", x.bandwidth())
           .attr("height", (d) => height - y(d.count))
           .attr("fill", "#5f0f40");
+
+        // Añadir etiquetas iniciales (ocultas)
+        const labels = svg
+          .selectAll(".label")
+          .data(processedData)
+          .join("text")
+          .attr("class", "label")
+          .attr("x", (d) => x(d.language) + x.bandwidth() / 2)
+          .attr("y", (d) => y(d.count) - 5)
+          .attr("text-anchor", "middle")
+          .style("fill", "black")
+          .style("opacity", 0) // Ocultas al inicio
+          .text((d) => d.count);
+
+        // Interactividad al pasar el cursor
+        bars
+          .on("mouseover", () => {
+            // Cambiar color de todas las barras
+            bars.attr("fill", "#ff6f61");
+            // Mostrar etiquetas
+            labels.style("opacity", 1);
+          })
+          .on("mouseout", () => {
+            // Restaurar color original
+            bars.attr("fill", "#5f0f40");
+            // Ocultar etiquetas
+            labels.style("opacity", 0);
+          });
       })
       .catch((error) => {
         console.error("Error cargando los datos:", error);
@@ -80,5 +109,10 @@ const Barchart = () => {
 };
 
 export default Barchart;
+
+
+
+
+
 
 
