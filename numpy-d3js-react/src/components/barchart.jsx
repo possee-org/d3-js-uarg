@@ -37,7 +37,7 @@ const Barchart = () => {
               !d.language.includes("ImportId") &&
               d.language !== "What language do you prefer to use?"
           )
-          .sort((a, b) => b.count - a.count); // Ordenar de mayor a menor
+          .sort((a, b) => b.count - a.count);
 
         const x = d3
           .scaleBand()
@@ -61,7 +61,6 @@ const Barchart = () => {
 
         svg.append("g").call(d3.axisLeft(y));
 
-        // Dibujar las barras
         const bars = svg
           .selectAll("rect")
           .data(processedData)
@@ -72,7 +71,6 @@ const Barchart = () => {
           .attr("height", (d) => height - y(d.count))
           .attr("fill", "#5f0f40");
 
-        // Añadir etiquetas iniciales (ocultas)
         const labels = svg
           .selectAll(".label")
           .data(processedData)
@@ -82,21 +80,16 @@ const Barchart = () => {
           .attr("y", (d) => y(d.count) - 5)
           .attr("text-anchor", "middle")
           .style("fill", "black")
-          .style("opacity", 0) // Ocultas al inicio
+          .style("opacity", 0)
           .text((d) => d.count);
 
-        // Interactividad al pasar el cursor
         bars
           .on("mouseover", () => {
-            // Cambiar color de todas las barras
             bars.attr("fill", "#ff6f61");
-            // Mostrar etiquetas
             labels.style("opacity", 1);
           })
           .on("mouseout", () => {
-            // Restaurar color original
             bars.attr("fill", "#5f0f40");
-            // Ocultar etiquetas
             labels.style("opacity", 0);
           });
       })
