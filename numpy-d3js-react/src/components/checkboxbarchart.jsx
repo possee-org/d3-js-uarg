@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 
-const Barchart = ({ question }) => {
+const CheckboxBarchart = ({ question }) => {
   const ref = useRef();
 
   useEffect(() => {
@@ -24,30 +24,30 @@ const Barchart = ({ question }) => {
         // Ignorar las primeras dos respuestas
         const filteredData = data.slice(2);
 
-        // Contar respuestas usando d3.rollup
-        const counts = d3.rollup(
-          filteredData,
-          (v) => v.length,
-          (d) => d[question]
-        );
+        // Paso 1: Contar selecciones por categoría
+        const counts = {};
 
-        // Procesar los datos en un array usable
-        const processedData = Array.from(counts, ([key, value]) => ({
-          language: key,
-          count: value,
-        }))
-          .filter(
-            (d) =>
-              d.language &&
-              !d.language.includes("ImportId") &&
-              d.language !== question
-          )
+        filteredData.forEach((entry) => {
+          const responses = entry[question];
+          if (responses) {
+            const categories = responses.split(",").map((item) => item.trim());
+            categories.forEach((category) => {
+              if (category && category !== "ImportId") {
+                counts[category] = (counts[category] || 0) + 1;
+              }
+            });
+          }
+        });
+
+        // Paso 2: Convertir a un array procesado
+        const processedData = Object.entries(counts)
+          .map(([key, value]) => ({ category: key, count: value }))
           .sort((a, b) => b.count - a.count);
 
         // Escalas
         const x = d3
           .scaleBand()
-          .domain(processedData.map((d) => d.language))
+          .domain(processedData.map((d) => d.category))
           .range([0, width])
           .padding(0.2);
 
@@ -73,7 +73,7 @@ const Barchart = ({ question }) => {
           .selectAll("rect")
           .data(processedData)
           .join("rect")
-          .attr("x", (d) => x(d.language))
+          .attr("x", (d) => x(d.category))
           .attr("y", (d) => y(d.count))
           .attr("width", x.bandwidth())
           .attr("height", (d) => height - y(d.count))
@@ -85,7 +85,7 @@ const Barchart = ({ question }) => {
           .data(processedData)
           .join("text")
           .attr("class", "label")
-          .attr("x", (d) => x(d.language) + x.bandwidth() / 2)
+          .attr("x", (d) => x(d.category) + x.bandwidth() / 2)
           .attr("y", (d) => y(d.count) - 5)
           .attr("text-anchor", "middle")
           .style("fill", "black")
@@ -111,13 +111,5 @@ const Barchart = ({ question }) => {
   return <div ref={ref} />;
 };
 
-export default Barchart;
-
-
-
-
-
-
-
-
+export default CheckboxBarchart;
 
