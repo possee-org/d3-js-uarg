@@ -21,10 +21,8 @@ const CheckboxBarchart = ({ question }) => {
 
     d3.json(url)
       .then((data) => {
-        // Ignorar las primeras dos respuestas
         const filteredData = data.slice(2);
 
-        // Paso 1: Contar selecciones por categoría
         const counts = {};
 
         filteredData.forEach((entry) => {
@@ -39,12 +37,10 @@ const CheckboxBarchart = ({ question }) => {
           }
         });
 
-        // Paso 2: Convertir a un array procesado
         const processedData = Object.entries(counts)
           .map(([key, value]) => ({ category: key, count: value }))
           .sort((a, b) => b.count - a.count);
 
-        // Escalas
         const x = d3
           .scaleBand()
           .domain(processedData.map((d) => d.category))
@@ -57,7 +53,6 @@ const CheckboxBarchart = ({ question }) => {
           .nice()
           .range([height, 0]);
 
-        // Ejes
         svg
           .append("g")
           .attr("transform", `translate(0, ${height})`)
@@ -68,7 +63,6 @@ const CheckboxBarchart = ({ question }) => {
 
         svg.append("g").call(d3.axisLeft(y));
 
-        // Barras
         const bars = svg
           .selectAll("rect")
           .data(processedData)
@@ -79,7 +73,6 @@ const CheckboxBarchart = ({ question }) => {
           .attr("height", (d) => height - y(d.count))
           .attr("fill", "#5f0f40");
 
-        // Etiquetas
         const labels = svg
           .selectAll(".label")
           .data(processedData)
@@ -92,7 +85,6 @@ const CheckboxBarchart = ({ question }) => {
           .style("opacity", 0)
           .text((d) => d.count);
 
-        // Interacciones
         bars
           .on("mouseover", () => {
             bars.attr("fill", "#ff6f61");
@@ -112,4 +104,5 @@ const CheckboxBarchart = ({ question }) => {
 };
 
 export default CheckboxBarchart;
+
 

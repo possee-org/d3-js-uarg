@@ -1,17 +1,18 @@
 import React from "react";
 import Barchart from "./components/barchart";
 import CheckboxBarchart from "./components/checkboxbarchart";
+import HorizontalBarchart from "./components/horizontalbarchart";
 
 const App = () => {
   return (
     <div>
-      <h1>Numpy 2020 survey results</h1>
+      <h1>NumPy 2020 survey results</h1>
       
       <h2>Preferred language</h2>
       <Barchart question="Q2.4" />
 
       <h2>Level of education</h2>
-      <Barchart question="Q2.7" />
+      <HorizontalBarchart question="Q2.7" />
 
       <h2>Current role in organization</h2>
       <Barchart question="Q2.9" />
@@ -25,7 +26,7 @@ const App = () => {
       <h2>Years of programming experience</h2>
       <Barchart question="Q2.12" />
 
-      <h2>Years of experience using Numpy</h2>
+      <h2>Years of experience using NumPy</h2>
       <Barchart question="Q2.13" />
 
       <h2>Frequency of use of NumPy</h2>
@@ -85,7 +86,7 @@ const App = () => {
       <h2>Are you interested in contributing to NumPy?</h2>
       <Barchart question="Q4.8" />
 
-      <h2>Ways of interest in contributing to numpy</h2>
+      <h2>Ways of interest in contributing to NumPy</h2>
       <CheckboxBarchart question="Q4.9" />
 
       <h2>Participation in a mentorship program in any open source community</h2>
@@ -115,7 +116,7 @@ const App = () => {
       <h2>Engaged activities with mentors</h2>
       <CheckboxBarchart question="Q5.10" />
 
-      <h2>Engaged activities with mentors</h2>
+      <h2>Level of satisfaction with mentorship experience</h2>
       <CheckboxBarchart question="Q5.11_1" />
 
       <h2>If NumPy had a mentorship program, would you be interested in participating?</h2>
@@ -127,13 +128,19 @@ const App = () => {
       <h2>Experienced problems in code last year</h2>
       <Barchart question="Q7.3" />
 
+      <h2>Actions taken in response to problems in code</h2>
+      <CheckboxBarchart question="Q7.4" />
+
       <h2>Numerical data problems that were unable to solve using NumPy</h2>
       <Barchart question="Q7.5" />
+
+      <h2>Actions taken in response to numerical data problems</h2>
+      <CheckboxBarchart question="Q7.6" />
 
       <h2>Good deprecation time frame</h2>
       <Barchart question="Q7.7" />
 
-      <h2>Is the organization interested in funding NumPy?</h2>
+      <h2>Is your organization interested in funding NumPy?</h2>
       <Barchart question="Q8.3" />
 
       <h2>How users heard about the survey</h2>
