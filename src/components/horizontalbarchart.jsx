@@ -66,7 +66,7 @@ const HorizontalBarchartRTL = ({ question }) => {
           .attr("height", y.bandwidth())
           .attr("width", (d) => width - x(d.percentage))
           .attr("fill", (d) =>
-            d.percentage == maxPercentage ? "#3FABCF" : "#C0C0C0"
+            d.percentage === maxPercentage ? "#3FABCF" : "#C0C0C0"
           );
 
         svg
@@ -114,7 +114,7 @@ const HorizontalBarchartRTL = ({ question }) => {
           })
           .on("mouseout", function (event, d) {
             d3.select(this).attr("fill", (d) =>
-              d.percentage == maxPercentage ? "#3FABCF" : "#C0C0C0"
+              d.percentage === maxPercentage ? "#3FABCF" : "#C0C0C0"
             );
             d3.selectAll(".percentage-label")
               .filter((label) => label.language === d.language)

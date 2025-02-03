@@ -77,10 +77,10 @@ const Barchart = ({ question }) => {
           .attr("y", (d) => y(d.percentage))
           .attr("width", x.bandwidth())
           .attr("height", (d) => height - y(d.percentage))
-          .attr("fill", (d) => (d.percentage == maxPercentage ? "#3FABCF" : "#C0C0C0"))
+          .attr("fill", (d) => (d.percentage === maxPercentage ? "#3FABCF" : "#C0C0C0"))
           .attr("class", "bar");
 
-        const labels = svg
+        /*const labels = svg
           .selectAll(".label")
           .data(processedData)
           .join("text")
@@ -89,10 +89,10 @@ const Barchart = ({ question }) => {
           .attr("y", (d) => y(d.percentage) - 5)
           .attr("text-anchor", "middle")
           .style("fill", (d) =>
-            d.percentage == maxPercentage ? "#3FABCF" : "#C0C0C0"
+            d.percentage === maxPercentage ? "#3FABCF" : "#C0C0C0"
           )
           .text((d) => `${d.percentage}%`);
-
+*/
         bars
           .on("mouseover", function (event, d) {
             d3.select(this).attr("fill", "#013243");
@@ -107,12 +107,12 @@ const Barchart = ({ question }) => {
           })
           .on("mouseout", function (event, d) {
             d3.select(this).attr("fill", (d) =>
-              d.percentage == maxPercentage ? "#3FABCF" : "#C0C0C0"
+              d.percentage === maxPercentage ? "#3FABCF" : "#C0C0C0"
             );
             d3.selectAll(".label")
               .filter((label) => label.language === d.language)
               .style("fill", (label) =>
-                label.percentage == maxPercentage ? "#3FABCF" : "#C0C0C0"
+                label.percentage === maxPercentage ? "#3FABCF" : "#C0C0C0"
               );
             d3.selectAll(".x-axis-label")
               .filter(function () {
